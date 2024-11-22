@@ -2,10 +2,13 @@
 <html>
 <head>
     <title>{% block head_title %}SaaS{% endblock head_title %}</title>
+    {% include "partials/css.html" %}
 </head>
 <body>
-    <h1>{{ page_title }}</h1>
+    {% include "./nav/navbar.html" %}
     {% block content %}
     {% endblock content %}
+
+    {% include "partials/js.html" %}
 </body>
 </html>

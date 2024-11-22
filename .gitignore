@@ -1,3 +1,8 @@
+# ignore  staticfiles assets
+src/staticfiles/assets
+# ignore assets
+src/local-cdn/
+
 .DS_store
 .env
 venv/

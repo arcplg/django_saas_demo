@@ -1,9 +1,10 @@
-{% extends "base.html" %}
+{% extends "layout/app.html" %}
 
 {% block head_title %}Homepage - {{ block.super }}{% endblock head_title %}
 
 {% block content %}
-{% include "snippets/welcome-user-msg.html" %}
+<h1 class="text-lg font-medium">{{ page_title }}</h1>
+{% include "partials/welcome-user-msg.html" %}
 <p>Page Visit: {{ page_visit_count }}</p>
 <p>Percent: {{ percent }}</p>
 <p>Total Visit: {{ page_visit_count }}</p>
