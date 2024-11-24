@@ -62,8 +62,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # apps
-    'visits',
-    'commando',
+    'apps.visits',
+    'apps.commando',
+    'apps.demo',
     # third-party-apps
     'allauth',
     'allauth.account',

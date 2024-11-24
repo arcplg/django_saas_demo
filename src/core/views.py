@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 import pathlib
 from django.shortcuts import render
-from visits.models import PageVisit
+from apps.visits.models import PageVisit
 
 this_dir = pathlib.Path(__file__).resolve().parent
 
