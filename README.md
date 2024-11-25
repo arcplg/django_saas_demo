@@ -35,3 +35,13 @@ openssl rand -base64 32
 
 ### some errors
 https://stackoverflow.com/questions/50236117/scraping-ssl-certificate-verify-failed-error-for-http-en-wikipedia-org
+
+## Links
+```
+https://docs.allauth.org/en/latest/index.html
+https://github.com/pennersr/django-allauth
+https://github.com/danihodovic/django-allauth-ui
+
+https://railway.app/
+https://neon.tech/(PostgreSQL)
+```
