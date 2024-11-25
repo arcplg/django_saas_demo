@@ -70,6 +70,9 @@ INSTALLED_APPS = [
     'allauth.account',
     # Optional -- requires install using `django-allauth[socialaccount]`.
     'allauth.socialaccount',
+    'allauth_ui',
+    'widget_tweaks',
+    'slippers'
 ]
 
 MIDDLEWARE = [
@@ -172,7 +175,7 @@ LOGIN_REDIRECT_URL = "/"
 ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
-ACCOUNT_EMAIL_SUBJECT_PREFIX = "[CFE] "
+ACCOUNT_EMAIL_SUBJECT_PREFIX = "[DJANGO SaaS] "
 
 # Django Allauth Config
 AUTHENTICATION_BACKENDS = [
