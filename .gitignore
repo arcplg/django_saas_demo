@@ -3,6 +3,7 @@ src/staticfiles/assets
 # ignore assets
 src/local-cdn/
 
+# Environments
 .DS_store
 .env
 venv/
@@ -10,3 +11,9 @@ venv/
 __pycache__/
 *.py[cod]
 *$py.class
+
+# Django stuff:
+*.log
+src/local_settings.py
+src/db.sqlite3
+src/db.sqlite3-journal
