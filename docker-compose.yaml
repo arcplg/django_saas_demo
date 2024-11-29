@@ -29,7 +29,7 @@ services:
     container_name: django
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: docker/Dockerfile
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
       - ./src/:/usr/src/code
@@ -42,7 +42,24 @@ services:
         condition: service_healthy
     networks:
       - app_django
-
+  phpmyadmin: 
+    image: phpmyadmin
+    restart: always
+    ports:
+      - 8088:80
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_HOST=db
+      - PMA_USER=${MYSQL_USER}
+      - PMA_PASSWORD=${MYSQL_PASSWORD}
+    networks:
+      - app_django
+  mailhog:
+    image: mailhog/mailhog
+    container_name: 'mailhog'
+    ports:
+      - "1025:1025"
+      - "8025:8025"
 networks:
   app_django:
     driver: bridge

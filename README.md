@@ -38,6 +38,15 @@ Access link http://127.0.0.1:8000/
 make secret-key
 ```
 
+### Mysql connection
+```
+Access link http://127.0.0.1:8088/
+```
+
+### Mysql mailhog
+```
+Access link http://127.0.0.1:8025/
+```
 
 ### some errors
 https://stackoverflow.com/questions/50236117/scraping-ssl-certificate-verify-failed-error-for-http-en-wikipedia-org
