@@ -35,5 +35,6 @@ urlpatterns = [
     path('protected/staff-only/', staff_only_view, name='staff_only_view'),
     path('', include("apps.auth.urls")),
     path('accounts/', include('allauth.urls')),
+    path('profiles/', include('apps.profiles.urls')),
     path('', include('apps.demo.urls')),
 ]
