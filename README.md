@@ -45,3 +45,51 @@ https://github.com/danihodovic/django-allauth-ui
 https://railway.app/
 https://neon.tech/(PostgreSQL)
 ```
+
+## With Docker
+## Setup
+```
+make build
+make migrate
+-> Access link http://127.0.0.1:8000/
+```
+
+### start after each stop
+```
+make start
+```
+
+### migrate
+```
+make migrate
+```
+
+### down
+```
+make down
+```
+
+### bash
+```
+make bash
+```
+
+### run server
+```
+Access link http://127.0.0.1:8000/
+```
+
+### Create SECRET_KEY
+```
+make secret-key
+```
+
+### Mysql connection
+```
+Access link http://127.0.0.1:8088/
+```
+
+### Mysql mailhog
+```
+Access link http://127.0.0.1:8025/
+```
