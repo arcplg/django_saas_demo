@@ -17,3 +17,4 @@ __pycache__/
 src/local_settings.py
 src/db.sqlite3
 src/db.sqlite3-journal
+docker/db/*
