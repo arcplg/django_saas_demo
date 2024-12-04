@@ -11,6 +11,7 @@ ENV PATH=/opt/venv/bin:$PATH
 
 # Upgrade pip
 RUN pip install --upgrade pip
+RUN pip install slack_bolt
 
 # Set Python-related environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
@@ -38,7 +39,12 @@ RUN mkdir -p /usr/src/code
 WORKDIR /usr/src/code
 
 # Copy the requirements file into the container
-COPY ../requirements.txt /tmp/requirements.txt
+COPY ../requirements.txt .
+
+COPY ../.env .env
+
+# Install the Python project requirements
+RUN pip install --no-cache-dir -r requirements.txt
 
 # copy the project code into the container's working directory
 COPY ../src /usr/src/code
@@ -46,21 +52,10 @@ COPY ../src /usr/src/code
 COPY ../docker/docker-entrypoint.sh /usr/src/
 RUN chmod +x /usr/src/docker-entrypoint.sh
 
-# Install the Python project requirements
-RUN pip install --no-cache-dir -r /tmp/requirements.txt
-
 ARG DJANGO_SECRET_KEY
 ENV DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
 ARG DJANGO_DEBUG=0
 ENV DJANGO_DEBUG=${DJANGO_DEBUG}
-
-# database isn't available during build
-# run any other commands that do not need the database
-# such as:
-# download css, js cdn to local
-RUN python manage.py assets_pull
-RUN python manage.py collectstatic --noinput
-# whitenoise -> s3
 
 # set the Django default project name
 ARG PROJ_NAME="core"

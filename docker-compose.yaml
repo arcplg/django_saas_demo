@@ -27,12 +27,15 @@ services:
 
   django:
     container_name: django
+    restart: always
     build:
       context: .
       dockerfile: docker/Dockerfile
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
       - ./src/:/usr/src/code
+      - ./.env:/usr/src/code/.env
+      - ./requirements.txt:/usr/src/requirements.txt
     env_file:
       - .env
     ports:
