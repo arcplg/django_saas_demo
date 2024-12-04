@@ -141,7 +141,6 @@ if DATABASE_URL is not None:
             conn_health_checks=True
         )
     }
-
 # Add these at the top of your settings.py
 # from os import getenv
 # from dotenv import load_dotenv
