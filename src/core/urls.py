@@ -37,4 +37,5 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
     path('profiles/', include('apps.profiles.urls')),
     path('', include('apps.demo.urls')),
+    path('subscriptions/', include('apps.subscriptions.urls')),
 ]
