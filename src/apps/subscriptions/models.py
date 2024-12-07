@@ -78,7 +78,7 @@ class SubscriptionPrice(models.Model):
         """
         remove decimal places
         """
-        return self.price * 100
+        return int(self.price * 100)
     
     def save(self, *args, **kwargs):
         if (not self.stripe_id and 
