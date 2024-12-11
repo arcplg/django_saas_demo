@@ -20,6 +20,7 @@ class Subscription(models.Model):
     Subscirption Plan = Stripe Product
     """
     name = models.CharField(max_length=120)
+    subtitle = models.TextField(blank=True, null=True)
     active = models.BooleanField(default=True)
     groups = models.ManyToManyField(Group) # one-to-one
     permissions =  models.ManyToManyField(Permission, limit_choices_to={
@@ -31,6 +32,7 @@ class Subscription(models.Model):
     featured = models.BooleanField(default=True, help_text='Featured on Django pricing page')
     updated = models.DateTimeField(auto_now=True)
     timestamp = models.DateTimeField(auto_now_add=True)
+    features = models.TextField(help_text="Features for pricing, seperated by new line", blank=True, null=True)
 
     def __str__(self):
         return self.name
@@ -38,6 +40,12 @@ class Subscription(models.Model):
     class Meta:
         ordering = ['order', 'featured', '-updated']
         permissions = SUBSCRIPTION_PERMISSIONS
+
+    # define get features as list attribute
+    def get_features_as_list(self):
+        if not self.features:
+            return []
+        return [x.strip() for x in self.features.split("\n")]
 
     def save(self, *args, **kwargs):
         if not self.stripe_id:
@@ -73,16 +81,32 @@ class SubscriptionPrice(models.Model):
         db_table = "subscriptions_price"
         ordering = ['subscription__order', 'order', 'featured', '-updated']
 
+    # define get features as list attribute
+    def display_feature_list(self):
+        if not self.subscription:
+            return []
+        return self.subscription.get_features_as_list()
+    
+    # define display_sub_name attribute
+    @property
+    def display_sub_name(self):
+        if not self.subscription:
+            return "Plan"
+        return self.subscription.name
+
+    # define product_stripe_id attribute
     @property
     def product_stripe_id(self):
         if not self.subscription:
             return None
         return self.subscription.stripe_id
     
+    # define stripe_currency attribute
     @property
     def stripe_currency(self):
         return "usd"
     
+    # define stripe_price attribute
     @property
     def stripe_price(self):
         """
