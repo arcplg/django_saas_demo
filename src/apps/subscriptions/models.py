@@ -69,7 +69,7 @@ class SubscriptionPrice(models.Model):
     stripe_id = models.CharField(max_length=120, null=True, blank=True)
     interval = models.CharField(max_length=120,
                                 default=InterValChoices.MONTHLY,
-                                choices=InterValChoices.choices
+                                choices=InterValChoices.choices # get_<field_name>_díplay
                             )
     price = models.DecimalField(max_digits=10, decimal_places=2, default=99.99)
     order = models.IntegerField(default=-1, help_text='Ordering on Django pricing page')
@@ -93,6 +93,13 @@ class SubscriptionPrice(models.Model):
         if not self.subscription:
             return "Plan"
         return self.subscription.name
+    
+    # define display_sub_subtitle attribute
+    @property
+    def display_sub_subtitle(self):
+        if not self.subscription:
+            return "Sub title plan"
+        return self.subscription.subtitle
 
     # define product_stripe_id attribute
     @property
