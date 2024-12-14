@@ -41,7 +41,7 @@ def checkout_redirect_view(request):
 
 def checkout_success_view(request):
     session_id = request.GET.get('session_id')
-    customer_id, plan_id = helpers.billing.get_checkout_customer_plan(session_id)
+    customer_id, plan_id, sub_stripe_id = helpers.billing.get_checkout_customer_plan(session_id)
     price_qs = SubscriptionPrice.objects.filter(stripe_id=plan_id)
     # get subscription object
     try:
@@ -55,19 +55,34 @@ def checkout_success_view(request):
         user_obj = None
     # get user subscription object
     _user_sub_exists = False
+    updated_sub_options = {
+        "subscription": sub_obj,
+        "stripe_id": sub_stripe_id,
+        "user_cancelled": False,
+    }
     try:
         _user_sub_obj = UserSubscription.objects.get(user=user_obj)
         _user_sub_exists = True
     except UserSubscription.DoesNotExist:
-        _user_sub_obj = UserSubscription.objects.create(user=user_obj, subscription=sub_obj)
+        _user_sub_obj = UserSubscription.objects.create(
+            user=user_obj,
+            **updated_sub_options
+        )
     except:
         _user_sub_obj = None
     if None in [sub_obj, user_obj, _user_sub_obj]:
         return _user_sub_obj("There was an error with your account, please contact us.")
     if _user_sub_exists:
         # cancel old sub
+        old_stripe_id = _user_sub_obj.stripe_id
+        if old_stripe_id is not None:
+            helpers.billing.cancel_subscription(old_stripe_id, reason="Auto ended, new membership", feedback="other")
         # assign new sub
-        _user_sub_obj.subscription = sub_obj
+        for k, v in updated_sub_options.items():
+            setattr(_user_sub_obj, k, v)
+            # _user_sub_obj.subscription = sub_obj
+            # _user_sub_obj.stripe_id = sub_stripe_id
+            # _user_sub_obj.user_cancelled = False
         _user_sub_obj.save()
     context = {}
     return render(request, "checkouts/success.html", context)
