@@ -39,6 +39,7 @@ SECRET_KEY = config("DJANGO_SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = str(os.environ.get('DJANGO_DEBUG')).lower() == "true"
 DEBUG = config("DJANGO_DEBUG", cast=bool)
+BASE_URL = config("BASE_URL", default=None)
 
 print("DEBUG", DEBUG, type(DEBUG))
 
@@ -68,6 +69,7 @@ INSTALLED_APPS = [
     'apps.profiles',
     'apps.subscriptions',
     'apps.customers',
+    'apps.checkouts',
     # third-party-apps
     'allauth',
     'allauth.account',

@@ -38,4 +38,5 @@ urlpatterns = [
     path('profiles/', include('apps.profiles.urls')),
     path('', include('apps.demo.urls')),
     path('subscriptions/', include('apps.subscriptions.urls')),
+    path('checkout/', include('apps.checkouts.urls'))
 ]
