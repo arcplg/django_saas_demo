@@ -6,6 +6,7 @@ from apps.subscriptions.models import SubscriptionPrice, Subscription, UserSubsc
 from django.urls import reverse
 from django.conf import settings
 from django.http import HttpResponseBadRequest
+from django.contrib import messages
 
 User = get_user_model()
 BASE_URL = settings.BASE_URL
@@ -99,5 +100,7 @@ def checkout_success_view(request):
             # _user_sub_obj.stripe_id = sub_stripe_id
             # _user_sub_obj.user_cancelled = False
         _user_sub_obj.save()
+        messages.success(request, "Success! thank you for joining.")
+        return redirect(_user_sub_obj.get_absolute_url())
     context = {}
     return render(request, "checkouts/success.html", context)
