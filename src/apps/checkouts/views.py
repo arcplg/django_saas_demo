@@ -22,13 +22,14 @@ def checkout_redirect_view(request):
         obj = SubscriptionPrice.objects.get(id=checkout_subscription_price_id)
     except:
         obj = None
+    print(obj.stripe_id)
     if checkout_subscription_price_id is None or obj is None:
         return redirect("subscriptions.pricing")
     customer_stripe_id = request.user.customer.stripe_id
     success_url_path = reverse("checkout.stripe-checkout-success")
-    cancel_url_path = reverse("subscriptions.pricing")
+    pricing_url_path = reverse("subscriptions.pricing")
     success_url = f"{BASE_URL}{success_url_path}"
-    cancel_url = f"{BASE_URL}{cancel_url_path}"
+    cancel_url= f"{BASE_URL}{pricing_url_path}"
     price_stripe_id = obj.stripe_id
     url = helpers.billing.start_checkout_session(
         customer_stripe_id,
@@ -41,8 +42,14 @@ def checkout_redirect_view(request):
 
 def checkout_success_view(request):
     session_id = request.GET.get('session_id')
-    customer_id, plan_id, sub_stripe_id = helpers.billing.get_checkout_customer_plan(session_id)
-    price_qs = SubscriptionPrice.objects.filter(stripe_id=plan_id)
+    # customer_id, plan_id, sub_stripe_id = helpers.billing.get_checkout_customer_plan(session_id)
+    checkout_data = helpers.billing.get_checkout_customer_plan(session_id)
+    customer_id = checkout_data.get("customer_id")
+    plan_id = checkout_data.get("plan_id")
+    sub_stripe_id = checkout_data.get("sub_stripe_id")
+    current_period_start = checkout_data.get("current_period_start")
+    current_period_end = checkout_data.get("current_period_end")
+    status = checkout_data.get("status")
     # get subscription object
     try:
         sub_obj = Subscription.objects.get(subscriptionprice__stripe_id=plan_id)
@@ -59,6 +66,9 @@ def checkout_success_view(request):
         "subscription": sub_obj,
         "stripe_id": sub_stripe_id,
         "user_cancelled": False,
+        "current_period_start": current_period_start,
+        "current_period_end": current_period_end,
+        "status": status
     }
     try:
         _user_sub_obj = UserSubscription.objects.get(user=user_obj)
@@ -75,10 +85,15 @@ def checkout_success_view(request):
     if _user_sub_exists:
         # cancel old sub
         old_stripe_id = _user_sub_obj.stripe_id
-        if old_stripe_id is not None:
-            helpers.billing.cancel_subscription(old_stripe_id, reason="Auto ended, new membership", feedback="other")
+        same_stripe_id = sub_stripe_id == old_stripe_id
+        if old_stripe_id is not None and not same_stripe_id:
+            try:
+                helpers.billing.cancel_subscription(old_stripe_id, reason="Auto ended, new membership", feedback="other")
+            except:
+                pass
         # assign new sub
         for k, v in updated_sub_options.items():
+            # set each item for _user_sub_obj object
             setattr(_user_sub_obj, k, v)
             # _user_sub_obj.subscription = sub_obj
             # _user_sub_obj.stripe_id = sub_stripe_id
