@@ -2,9 +2,9 @@ name: 3 - Django Test ENV Vars
 
 on:
   workflow_dispatch:
-  push: # git push
-    branch:
-      - master
+  # push: # git push
+  #   branch:
+  #     - master
 
 jobs:
   test:
