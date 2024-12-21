@@ -2,9 +2,9 @@ name: 4 - Branch Neon DB for Django Tests
 
 on:
   workflow_dispatch:
-  push: # git push
-    branch:
-      - master
+  push:
+    branches:
+      - main
 
 jobs:
   test:
@@ -34,27 +34,31 @@ jobs:
       - name: Delete previous branch
         continue-on-error: true
         run: |
-          neonctl branchs delete "${{ env.NEON_GITHUB_BRANCH }}" --project-id "${{ env.NEON_PROJECT_ID }}"
-      - name: Create new github actions branch
+          neonctl branches delete "${{ env.NEON_GITHUB_BRANCH }}" --project-id "${{ env.NEON_PROJECT_ID }}"
+      - name: Create new Github Actions branch
         run: |
-          neonctl branchs create --name "${{ env.NEON_GITHUB_BRANCH }}" --parent "${{ env.NEON_PROD_BRANCH }}" --project-id "${{ env.NEON_PROJECT_ID }}"
-      - name: Database URL Env Val for new github actions branch
+          neonctl branches create --name "${{ env.NEON_GITHUB_BRANCH }}" --parent "${{ env.NEON_PROD_BRANCH }}" --project-id "${{ env.NEON_PROJECT_ID }}"
+      - name: Database URL Env Val for new Github Actions branch
         run: |
           MY_NEON_CONN_STRING=$(neonctl connection-string --branch "${{ env.NEON_GITHUB_BRANCH }}" --project-id "${{ env.NEON_PROJECT_ID }}")
           echo "DATABASE_URL=$MY_NEON_CONN_STRING" >> $GITHUB_ENV
       - name: Setup Django Secret Key
         run: |
-          MY_GENE_KEY=$(openssl rand -base64 32)
-          echo "DJANGO_SECRET_KEY=$MY_GENE_KEY" >> $GITHUB_ENV
-      - name: Show DATABASE_URL
-        run: |
-          echo ${{ env.DATABASE_URL }}
-          echo $DATABASE_URL
+          MY_GEN_KEY=$(openssl rand -base64 32)
+          echo "DJANGO_SECRET_KEY=$MY_GEN_KEY" >> $GITHUB_ENV
       - name: Install Requirements
         run: |
           python -m pip install pip --upgrade
           python -m pip install -r requirements.txt
+      - name: Django Migrate Database
+        working-directory: ./src
+        run: |
+          python manage.py migrate
       - name: Django Tests
         working-directory: ./src
         run: |
-          python manage.py test apps/
+          python manage.py test
+      - name: Clean Up Step
+        continue-on-error: true
+        run: |
+          neonctl branches delete "${{ env.NEON_GITHUB_BRANCH }}" --project-id "${{ env.NEON_PROJECT_ID }}"
