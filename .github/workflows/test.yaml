@@ -1,6 +1,7 @@
 name: 1 - Test GitHub actions
 
 on:
+  workflow_dispatch:
   push: # git push
     branch:
       - master
