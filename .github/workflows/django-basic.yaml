@@ -2,8 +2,6 @@ name: 2 - Django GitHub actions
 
 on:
   workflow_dispatch:
-  # schedule:
-  #   - cron: '30 15 * * *'
   push: # git push
     branch:
       - master
@@ -17,7 +15,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: 'pypy3.12'
+          python-version: '3.12'
       - name: Django Tests
         working-directory: ./src
         run: |
