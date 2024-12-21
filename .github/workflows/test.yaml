@@ -2,9 +2,11 @@ name: 1 - Test GitHub actions
 
 on:
   workflow_dispatch:
-  push: # git push
-    branch:
-      - master
+  # schedule:
+  #   - cron: '30 15 * * *'
+  # push: # git push
+  #   branch:
+  #     - master
 
 jobs:
   test:
