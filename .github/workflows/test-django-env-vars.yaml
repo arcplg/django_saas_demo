@@ -11,6 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       DJANGO_DEBUG: 0
+      DATABASE_URL: ${{ secrets.NEON_DATABASE_URL }}
       # DJANGO_SECRET_KEY: not-good
     steps:
       - name: Checkout Code
@@ -19,6 +20,9 @@ jobs:
         run: |
           MY_GENERAGE_KEY=$(openssl rand -base64 32)
           echo "DJANGO_SECRET_KEY=$MY_GENERAGE_KEY" >> $GITHUB_ENV
+      - name: Show DATABASE_URL
+        run: |
+          echo ${{ DATABASE_URL }}
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
