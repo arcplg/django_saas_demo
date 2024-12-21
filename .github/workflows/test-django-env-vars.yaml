@@ -22,7 +22,8 @@ jobs:
           echo "DJANGO_SECRET_KEY=$MY_GENERAGE_KEY" >> $GITHUB_ENV
       - name: Show DATABASE_URL
         run: |
-          echo ${{ DATABASE_URL }}
+          echo ${{ env.DATABASE_URL }}
+          echo $DATABASE_URL
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
