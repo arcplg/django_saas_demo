@@ -29,7 +29,8 @@ from .views import (
 urlpatterns = [
     path('admin/', admin.site.urls),
 
-    path('', home_view, name='home'),
+    # path('', home_view, name='home'),
+    path('', include('apps.landing.urls')),
     path('about/', about_view, name='about'),
     path('protected/', pw_protected_view, name='pw_protected_view'),
     path('protected/user-only/', user_only_view, name='user_only_view'),

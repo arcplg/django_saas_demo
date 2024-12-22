@@ -70,6 +70,8 @@ INSTALLED_APPS = [
     'apps.subscriptions',
     'apps.customers',
     'apps.checkouts',
+    'apps.landing',
+    'apps.dashboard',
     # third-party-apps
     'allauth',
     'allauth.account',
