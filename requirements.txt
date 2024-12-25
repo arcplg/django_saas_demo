@@ -1,5 +1,5 @@
 Django>=5.0,<5.2
-mysqlclient==2.1.1
+mysqlclient
 gunicorn
 python-decouple
 psycopg[binary]
@@ -12,3 +12,5 @@ django-widget-tweaks
 slippers
 slack-sdk
 slack_bolt
+stripe
+django-debug-toolbar

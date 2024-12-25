@@ -39,6 +39,7 @@ SECRET_KEY = config("DJANGO_SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = str(os.environ.get('DJANGO_DEBUG')).lower() == "true"
 DEBUG = config("DJANGO_DEBUG", cast=bool)
+BASE_URL = config("BASE_URL", default=None)
 
 print("DEBUG", DEBUG, type(DEBUG))
 
@@ -66,6 +67,12 @@ INSTALLED_APPS = [
     'apps.commando',
     'apps.demo',
     'apps.slackapp',
+    'apps.profiles',
+    'apps.subscriptions',
+    'apps.customers',
+    'apps.checkouts',
+    'apps.landing',
+    'apps.dashboard',
     # third-party-apps
     'allauth',
     'allauth.account',
@@ -75,6 +82,7 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'slippers',
     'allauth.socialaccount.providers.github',
+    'debug_toolbar'
 ]
 
 MIDDLEWARE = [
@@ -88,6 +96,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     # Add the account middleware:
     "allauth.account.middleware.AccountMiddleware",
+    "debug_toolbar.middleware.DebugToolbarMiddleware"
 ]
 
 ROOT_URLCONF = 'core.urls'
@@ -140,7 +149,6 @@ if DATABASE_URL is not None:
             conn_health_checks=True
         )
     }
-
 # Add these at the top of your settings.py
 # from os import getenv
 # from dotenv import load_dotenv
@@ -253,3 +261,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 SLACK_BOT_TOKEN = config("SLACK_BOT_TOKEN")
 SLACK_APP_TOKEN = config("SLACK_APP_TOKEN")
+INTERNAL_IPS = [
+    # ...
+    "127.0.0.1",
+    # ...
+]

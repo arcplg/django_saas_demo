@@ -16,6 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from debug_toolbar.toolbar import debug_toolbar_urls
 
 from .views import (
     home_view,
@@ -28,13 +29,18 @@ from .views import (
 urlpatterns = [
     path('admin/', admin.site.urls),
 
-    path('', home_view, name='home'),
+    # path('', home_view, name='home'),
+    path('', include('apps.landing.urls')),
     path('about/', about_view, name='about'),
     path('protected/', pw_protected_view, name='pw_protected_view'),
     path('protected/user-only/', user_only_view, name='user_only_view'),
     path('protected/staff-only/', staff_only_view, name='staff_only_view'),
     path('', include("apps.auth.urls")),
     path('accounts/', include('allauth.urls')),
+    path('profiles/', include('apps.profiles.urls')),
     path('', include('apps.demo.urls')),
-    path('slack/', include('apps.slackapp.urls'))
-]
+    path('slack/', include('apps.slackapp.urls')),
+
+    path('subscriptions/', include('apps.subscriptions.urls')),
+    path('checkout/', include('apps.checkouts.urls'))
+] + debug_toolbar_urls()

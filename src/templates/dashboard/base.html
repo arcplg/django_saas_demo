@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block head_title %}SaaS{% endblock head_title %}</title>
+    {% include 'partials/css.html' %}
+</head>
+<body>
+    <div class="antialiased bg-gray-50 dark:bg-gray-900">
+        {% include 'dashboard/nav.html' %}
+        {% comment %} {% include "../layouts/nav/navbar.html" %} {% endcomment %}
+        {% include 'dashboard/sidebar.html' %}
+
+        <main class="p-4 md:ml-64 h-auto pt-20">
+        {% include 'partials/messages.html' with messages=messages %}
+        {% block content %}
+        {% endblock content %}
+    </main>
+
+    </div>
+    {% include 'partials/js.html' %}
+</body>
+</html>

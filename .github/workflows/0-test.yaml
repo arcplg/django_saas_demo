@@ -1,0 +1,17 @@
+name: 1 - Test GitHub actions
+
+on:
+  workflow_dispatch:
+  # schedule:
+  #   - cron: '30 15 * * *'
+  # push: # git push
+  #   branch:
+  #     - master
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Test run github actions
+        run: echo "Hello, Test run github actions"
+
