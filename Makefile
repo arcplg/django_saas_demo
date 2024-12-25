@@ -36,3 +36,7 @@ startapp:
 		exit 1; \
 	fi
 	@${DCE} django bash -c "mkdir -p /usr/src/code/apps/$(app_name) && cd /usr/src/code && python manage.py startapp $(app_name) apps/$(app_name) || true"
+
+.PHONY: slack
+slack:
+	docker-compose restart slack-bolt

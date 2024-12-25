@@ -36,4 +36,5 @@ urlpatterns = [
     path('', include("apps.auth.urls")),
     path('accounts/', include('allauth.urls')),
     path('', include('apps.demo.urls')),
+    path('slack/', include('apps.slackapp.urls'))
 ]

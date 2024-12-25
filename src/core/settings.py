@@ -65,6 +65,7 @@ INSTALLED_APPS = [
     'apps.visits',
     'apps.commando',
     'apps.demo',
+    'apps.slackapp',
     # third-party-apps
     'allauth',
     'allauth.account',
@@ -249,3 +250,6 @@ STORAGES = {
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+SLACK_BOT_TOKEN = config("SLACK_BOT_TOKEN")
+SLACK_APP_TOKEN = config("SLACK_APP_TOKEN")
