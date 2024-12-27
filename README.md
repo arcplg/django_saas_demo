@@ -50,7 +50,7 @@ https://neon.tech/(PostgreSQL)
 ## Setup
 ```
 make build
-make migrate
+make setup
 -> Access link http://127.0.0.1:8000/
 ```
 
@@ -93,3 +93,8 @@ Access link http://127.0.0.1:8088/
 ```
 Access link http://127.0.0.1:8025/
 ```
+### Start new app
+```
+make startapp app_name='your app name'
+```
+

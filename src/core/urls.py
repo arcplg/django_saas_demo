@@ -39,6 +39,8 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
     path('profiles/', include('apps.profiles.urls')),
     path('', include('apps.demo.urls')),
+    path('slack/', include('apps.slackapp.urls')),
+
     path('subscriptions/', include('apps.subscriptions.urls')),
     path('checkout/', include('apps.checkouts.urls'))
 ] + debug_toolbar_urls()

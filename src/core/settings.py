@@ -44,12 +44,14 @@ BASE_URL = config("BASE_URL", default=None)
 print("DEBUG", DEBUG, type(DEBUG))
 
 ALLOWED_HOSTS = [
-    ".railway.app" # https://saas.prod.railway.app
+    ".railway.app", # https://saas.prod.railway.app,
+    ".ngrok-free.app"
 ]
 if DEBUG:
     ALLOWED_HOSTS += [
         "127.0.0.1",
-        "localhost"
+        "localhost",
+        "polliwog-above-mentally.ngrok-free.app"
     ]
 
 # Application definition
@@ -66,6 +68,7 @@ INSTALLED_APPS = [
     'apps.visits',
     'apps.commando',
     'apps.demo',
+    'apps.slackapp',
     'apps.profiles',
     'apps.subscriptions',
     'apps.customers',
@@ -257,6 +260,14 @@ STORAGES = {
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+SLACK_BOT_TOKEN = config("SLACK_BOT_TOKEN")
+SLACK_APP_TOKEN = config("SLACK_APP_TOKEN")
+SLACK_CLIENT_ID = config("SLACK_CLIENT_ID")
+SLACK_CLIENT_SECR = config("SLACK_CLIENT_SECR")
+SLACK_SIGNING_SECR = config("SLACK_SIGNING_SECR")
+SLACK_REDIRECT_URI = config("SLACK_REDIRECT_URI")
+SLACK_OAUTH2_ENDPOINT = config("SLACK_OAUTH2_ENDPOINT")
 
 INTERNAL_IPS = [
     # ...
