@@ -22,6 +22,13 @@ Tài liệu này cung cấp hướng dẫn chi tiết về thiết lập, cấu 
    - `users.profile:read` - Cung cấp quyền truy cập vào hồ sơ người dùng workspace làm việc.
    - `reactions:read` - Cho phép xem phản ứng biểu tượng cảm xúc trên tin nhắn.
    - `incoming-webhook` - Hỗ trợ đăng tin nhắn lên các kênh đã chỉ định.
+   - `groups:write` - Quản lý các kênh riêng tư mà bot đã được thêm vào và tạo các kênh mới.
+   - `users:read` - Xem mọi người trong không gian làm việc.
+   - `usergroups:read` - Xem nhóm người dùng trong workspace.
+   - `im:history` - Xem tin nhắn và nội dung khác trong tin nhắn trực tiếp mà bot đã được thêm vào.
+   - `groups:read` - Xem thông tin cơ bản về các kênh riêng tư mà bot đã được thêm vào.
+   - `groups:history` - Xem tin nhắn và nội dung khác trong các kênh riêng tư mà bot đã được thêm vào.
+   - `commands` - Thêm phím tắt / hoặc lệnh gạch chéo mà mọi người có thể sử dụng.
 3. Lưu thay đổi để xác nhận scopes.
 4. Cài đặt ứng dụng vào workspace của bạn bằng cách nhấp vào **Install to Workspace**. Thao tác này sẽ tạo một Bot User OAuth Token (e.g., `xoxb-...`) sẽ được sử dụng cho các lệnh gọi API.
 
@@ -33,6 +40,26 @@ Tài liệu này cung cấp hướng dẫn chi tiết về thiết lập, cấu 
 ### 1.4 Configuring Event Subscriptions
 1. Đi đến **Event Subscriptions** trong cài đặt app và bật nó.
 2. Thêm một **Request URL** trỏ đến điểm cuối server của bạn để xử lý các sự kiện Slack. Sử dụng công cụ tunneling tool như ngrok trong quá trình phát triển. (Trường hợp không có **Request URL** có thể sử dụng **Socket Mode**)
+    - Thêm Request URL: `https://polliwog-above-mentally.ngrok-free.app/slack/events`
+    - Tại source thêm api để lắng nghe sự kiện `slack/events`
+```python
+@require_POST
+@csrf_exempt
+def slack_events(request):
+    verification_response = verify_slack_request(request)
+    if verification_response:
+        return verification_response
+
+    try: 
+        # code logic
+
+        if "challenge" in data:
+            return JsonResponse({"challenge": data["challenge"]})
+        return JsonResponse({"message": "Invalid request"}, status=400) 
+    except: 
+        return JsonResponse({'error': 'Server error'}, status=500)
+```
+
 3. Đăng ký các sự kiện sau **Bot Events**:
    - `reaction_added` - Kích hoạt khi reaction được thêm vào tin nhắn.
    - `reaction_removed` - Kích hoạt khi reaction được xóa ở tin nhắn.
@@ -302,3 +329,6 @@ client.chat_postEphemeral(
     ]
 )
 ```
+
+### 3. Manage Distribution
+

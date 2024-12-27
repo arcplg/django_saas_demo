@@ -6,8 +6,9 @@ from slack_bolt.adapter.socket_mode import SocketModeHandler
 from slack_sdk.errors import SlackApiError
 import json
 from collections import defaultdict
+from apps.slackapp.models import SlackWorkspace
 
-def register_event_handlers(app, client):
+def register_event_handlers(app, client=None):
     reaction_set = { "pe10", "pe50", "pe100", "pe500" }
     actions_used = defaultdict(lambda: defaultdict(list))
     
@@ -23,9 +24,6 @@ def register_event_handlers(app, client):
             say(channel=sender_id, text="You cannot received pelacoin from your self")
             return
 
-        print(sender_id)
-        print(receiver_id)
-
         sender = app.client.users_profile_get(user=sender_id)
         sender_name = sender['profile']['real_name']
         receiver = app.client.users_profile_get(user=receiver_id)
@@ -40,7 +38,6 @@ def register_event_handlers(app, client):
         }
 
         if reaction in reaction_set:
-            print(reaction)
             print("Reaction added")
 
             client.chat_postEphemeral(
@@ -85,15 +82,9 @@ def register_event_handlers(app, client):
                 ]
             )
 
-            # say(f"Hi {receiver_name}, you received coin {reaction} from {sender_name}")
-            # say(channel=sender_id, text=f"Bạn vừa gửi tặng {reaction} đến người nhận {receiver_name}")
-            # say(channel=receiver_id, text=f"Bạn vừa được thêm {reaction} coin từ {sender_name}")
-
-
     @app.action("reaction_agree") 
     def handle_agree(ack, body, client, say): 
         ack() 
-        print("asdasd")
         try:
             action = body.get("actions", [])[0] if body.get("actions") else None
             if action: 

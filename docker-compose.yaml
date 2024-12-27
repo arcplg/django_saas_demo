@@ -25,20 +25,20 @@ services:
     networks:
       - app_django
 
-  slack-bolt:
-    container_name: slack-bolt
-    restart: always
-    build:
-      context: .
-      dockerfile: docker/Dockerfile
-    command: python manage.py start_slack_handler
-    volumes:
-      - ./src/:/usr/src/code
-      - ./.env:/usr/src/code/.env
-    env_file:
-      - .env
-    networks:
-      - app_django
+  # slack-bolt:
+  #   container_name: slack-bolt
+  #   restart: always
+  #   build:
+  #     context: .
+  #     dockerfile: docker/Dockerfile
+  #   command: python manage.py start_slack_handler
+  #   volumes:
+  #     - ./src/:/usr/src/code
+  #     - ./.env:/usr/src/code/.env
+  #   env_file:
+  #     - .env
+  #   networks:
+  #     - app_django
 
   django:
     container_name: django
@@ -47,6 +47,8 @@ services:
       context: .
       dockerfile: docker/Dockerfile
     command: python manage.py runserver 0.0.0.0:8000
+    # command: > 
+    #   sh -c "pip install -r /usr/src/requirements.txt && python manage.py runserver 0.0.0.0:8000"
     volumes:
       - ./src/:/usr/src/code
       - ./.env:/usr/src/code/.env

@@ -22,6 +22,13 @@ This document provides detailed instructions on setting up, configuring, and imp
    - `users.profile:read` - Provides access to user profile information in the workspace.
    - `reactions:read` - Allows viewing emoji reactions to messages.
    - `incoming-webhook` - Supports posting messages to specified channels.
+   - `groups:write` - Manage private channels that bot has been added to and create new ones.
+   - `users:read` - View people in a workspace.
+   - `usergroups:read` - View user groups in a workspace.
+   - `im:history` - View messages and other content in direct messages that bot has been added to.
+   - `groups:read` - View basic information about private channels that bot has been added to.
+   - `groups:history` - View messages and other content in private channels that bot has been added to.
+   - `commands` - Add shortcuts and/or slash commands that people can use.
 3. Save changes to confirm the scopes.
 4. Install the application to your workspace by clicking **Install to Workspace**. This action will generate a Bot User OAuth Token (e.g., `xoxb-...`) that will be used for API calls.
 

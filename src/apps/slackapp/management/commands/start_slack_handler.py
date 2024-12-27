@@ -27,8 +27,6 @@ class Command(BaseCommand):
     def _start_socket_mode_handler(self, app):
         try:
             self.stdout.write(self.style.SUCCESS("Starting Slack handler..."))
-            print(settings.SLACK_APP_TOKEN)
-            print(settings.SLACK_BOT_TOKEN)
             SocketModeHandler(app, settings.SLACK_APP_TOKEN).start()
         except Exception as e:
             self.stderr.write(self.style.ERROR(f"Error starting Socket Mode Handler: {e}"))
