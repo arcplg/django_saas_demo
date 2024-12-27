@@ -202,3 +202,111 @@ def slack_events(request):
         return JsonResponse({"message": "Invalid request"}, status=400) 
     except: 
         return JsonResponse({'error': 'Server error'}, status=500)
+    
+@require_POST
+@csrf_exempt
+def slack_pelacoin_command(request):
+    data = request.POST
+
+    team_id = data.get('team_id')
+    workspace = get_object_or_404(SlackWorkspace, team_id=team_id)
+    client = WebClient(token=workspace.access_token)
+
+    client.views_open(
+        trigger_id=data.get('trigger_id'),
+        view={
+            "type": "modal",
+            "callback_id": "apply_for_leave",
+            "title": {
+                "type": "plain_text",
+                "text": "Concrete-Corp",
+                "emoji": True
+            },
+            "submit": {
+                "type": "plain_text",
+                "text": "Submit",
+                "emoji": True
+            },
+            "close": {
+                "type": "plain_text",
+                "text": "Cancel",
+                "emoji": True
+            },
+            "blocks": [
+                {
+                    "type": "header",
+                    "text": {
+                        "type": "plain_text",
+                        "text": "Tặng Pelacoin",
+                        "emoji": True
+                    }
+                },
+                {
+                    "type": "section",
+                    "text": {
+                        "type": "mrkdwn",
+                        "text": "Chọn nhân viên tặng point!"
+                    },
+                    "accessory": {
+                        "type": "users_select",
+                        "placeholder": {
+                            "type": "plain_text",
+                            "text": "Select a user",
+                            "emoji": True
+                        },
+                        "action_id": "user_involved"
+                    }
+                },
+                {
+                    "type": "input",
+                    "element": {
+                        "type": "radio_buttons",
+                        "options": [
+                            {
+                                "text": {
+                                    "type": "plain_text",
+                                    "text": "10",
+                                    "emoji": True
+                                },
+                                "value": "value-0"
+                            },
+                            {
+                                "text": {
+                                    "type": "plain_text",
+                                    "text": "100",
+                                    "emoji": True
+                                },
+                                "value": "value-1"
+                            },
+                            {
+                                "text": {
+                                    "type": "plain_text",
+                                    "text": "200",
+                                    "emoji": True
+                                },
+                                "value": "value-2"
+                            }
+                        ],
+                        "action_id": "checkboxes-action"
+                    },
+                    "label": {
+                        "type": "plain_text",
+                        "text": "Label",
+                        "emoji": True
+                    }
+                },
+                {
+                    "type": "input",
+                    "element": {
+                        "type": "plain_text_input",
+                        "multiline": True,
+                        "action_id": "reason"
+                    },
+                    "label": {
+                        "type": "plain_text",
+                        "text": "Lý do",
+                        "emoji": True
+                    }
+                }
+            ]
+        })
